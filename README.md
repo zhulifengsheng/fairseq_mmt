@@ -35,8 +35,23 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 * nltk verison == 3.6.4
 * sacrebleu version == 1.5.1
 
-# dsa
+# image feature
 ```bash
 # please read scripts/README.md
 python3 scripts/get_img_feat.py
+```
+
+# preprocess
+```bash
+sh preprocess.sh
+```
+
+# train
+```bash
+sh train.sh
+```
+
+# translation
+```bash
+sh translation.sh
 ```

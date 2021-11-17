@@ -47,7 +47,7 @@ if __name__ == "__main__":
     
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
-    
+    print('extracting ' + dataset + '\'s image feature from '+model_name) 
     model = timm.create_model(model_name, pretrained=True, num_classes=0).to('cuda:0') # if use cpu, uncomment '.to('cuda:0')'
     model.eval()
     config = resolve_data_config({}, model=model)
@@ -65,8 +65,7 @@ if __name__ == "__main__":
             input = transform(img).unsqueeze(0).to('cuda:0') # transform and add batch dimension
             
             out = model.forward_features(input)
-            print(out.shape)
-            exit()
+            
             tmp.append(out.detach().to('cuda:1'))
             if len(tmp) == 2000:
                 res = torch.cat(tmp).cpu()
@@ -76,7 +75,7 @@ if __name__ == "__main__":
                 tmp = []
     
     res = torch.cat(tmp).cpu()
-    print(dataset, res.shape, 'save in: ', save_dir)
+    print('feature shape:', res.shape, ',save in:', save_dir+'/'+dic2[dataset]+'.pth')
     if count > 1:
         torch.save(res, os.path.join(save_dir, 'final'+dic2[dataset]+'.pth'))
     else:
