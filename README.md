@@ -36,6 +36,7 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 * sacrebleu version == 1.5.1
 
 # dsa
-'''bash
+```bash
+# please read scripts/README.md
 python3 scripts/get_img_feat.py
-'''
+```
