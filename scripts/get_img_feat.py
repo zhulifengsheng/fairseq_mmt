@@ -39,6 +39,7 @@ def get_filenames(path):
     return l
 
 if __name__ == "__main__":
+    # please see scripts/README.md firstly. 
     flickr30k_path = '../flickr30k'
     dataset = data_splits[-1]
     model_name = dic_model[0]
