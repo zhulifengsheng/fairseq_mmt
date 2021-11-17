@@ -1,9 +1,11 @@
+# please see scripts/README.md firstly. 
 import timm
 import os
 import torch
 from tqdm import tqdm
 from timm.data import resolve_data_config
 from timm.data.transforms_factory import create_transform
+import argparse
 from PIL import Image
 
 dic = {
@@ -22,8 +24,6 @@ dic2 = {
     'val': 'valid',
     }
 
-data_splits = ['train', 'val', 'test2016', 'test2017', 'testcoco']
-
 dic_model = [
     'vit_tiny_patch16_384',
     'vit_small_patch16_384',
@@ -40,8 +40,12 @@ def get_filenames(path):
 
 if __name__ == "__main__":
     # please see scripts/README.md firstly. 
+    parser = argparse.ArgumentParser(description='which dataset')
+    parser.add_argument('--dataset', type=str, choices=['train', 'valid', 'test2016', 'test2017', 'testcoco'], help='which dataset')
+    args = parser.parse_args()
+
     flickr30k_path = '../flickr30k'
-    dataset = data_splits[-1]
+    dataset = args.dataset
     model_name = dic_model[0]
     save_dir = os.path.join('data', model_name)
     

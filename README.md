@@ -35,23 +35,27 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 * nltk verison == 3.6.4
 * sacrebleu version == 1.5.1
 
+# multi30k data 
+we use multi30k data from [revisit](https://)  
+The offical multi30k data from []()
+
 # image feature
 ```bash
 # please read scripts/README.md
-python3 scripts/get_img_feat.py
+python3 scripts/get_img_feat.py --dataset train
 ```
 
-# preprocess
+# preprocess text data
 ```bash
 sh preprocess.sh
 ```
 
 # train
 ```bash
-sh train.sh
+sh train_mmt.sh
 ```
 
 # translation
 ```bash
-sh translation.sh
+sh translation_mmt.sh
 ```
