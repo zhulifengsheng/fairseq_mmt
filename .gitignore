@@ -133,3 +133,7 @@ experimental/*
 
 .github
 .gitmodules
+
+# DATA
+*.pt
+*.pth
