@@ -56,6 +56,7 @@ from .shorten_dataset import TruncateDataset, RandomCropDataset
 from .multilingual.sampled_multi_dataset import SampledMultiDataset
 from .multilingual.sampled_multi_epoch_dataset import SampledMultiEpochDataset
 from .fasta_dataset import FastaDataset, EncodedFastaDataset
+from .image_dataset import ImageDataset
 
 from .iterators import (
     CountingIterator,
@@ -83,6 +84,7 @@ __all__ = [
     "FastaDataset",
     "GroupedIterator",
     "IdDataset",
+    "ImageDataset",
     "IndexedCachedDataset",
     "IndexedDataset",
     "IndexedRawTextDataset",

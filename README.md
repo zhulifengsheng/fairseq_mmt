@@ -35,11 +35,12 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 * nltk verison == 3.6.4
 * sacrebleu version == 1.5.1
 
-# multi30k data 
-we use multi30k data from [revisit](https://)  
-The offical multi30k data from []()
+# multi30k data & flickr30k entities
+we use multi30k data from [here](https://github.com/LividWo/Revisit-MMT)  
+The offical multi30k data from [here](https://github.com/multi30k/dataset)
+flickr30k entities data from [here](https://github.com/BryanPlummer/flickr30k_entities)
 
-# image feature
+# VIT image feature
 ```bash
 # please read scripts/README.md
 python3 scripts/get_img_feat.py --dataset train
