@@ -389,7 +389,7 @@ class TransformerEncoder(FairseqEncoder):
         
         self.is_fusion_top = args.is_fusion_top
 
-        self.recoder = utils.Recorder()
+        self.recoder = utils.Recorder(args)
 
     def f(self, l, fun='sum'):
         if fun == 'avg':
@@ -405,18 +405,17 @@ class TransformerEncoder(FairseqEncoder):
                 res = res + i
             return res
 
-    def fuse_img_feat(self, text, idx, image, image_mask):
+    def fuse_img_feat(self, text, idx, image, image_mask, text_mask):
         image = self.image_dropout_module(image)
-        output, _map = self.selective_attns[idx](query=text, key=image, value=image, key_padding_mask=image_mask)
-
+        output, _map = self.selective_attns[idx](query=text, key=image, value=image, key_padding_mask=image_mask)   # t, b, c
+        
         merge = torch.cat([output, text], dim=-1)
         gate = torch.sigmoid(self.gate_denses[idx](merge))
-        
-        self.recoder.record_gate(gate.cpu())
-        # _map = _map[:,:,1:].softmax(dim=-1)
-        # print(_map.shape)
-        # self.recoder.record_map(_map.cpu())
 
+        # self.recoder.record_gate(gate.cpu(), text_mask.cpu())
+        # _map = _map[:,:,1:].softmax(dim=-1)
+        # self.recoder.record_map(_map.cpu())
+        
         res = (1 - gate) * text + gate * output
         return res
 
@@ -482,13 +481,12 @@ class TransformerEncoder(FairseqEncoder):
         encoder_padding_mask = src_tokens.eq(self.padding_idx)
 
         encoder_states = [] if return_all_hiddens else None
-
         xs = []
         idx = 0
         if not self.is_fusion_top:
             for img, img_mask in zip(imgs_list, img_masks_list):
                 img = img.transpose(0, 1)
-                xs.append(self.fuse_img_feat(x, idx, img, img_mask))
+                xs.append(self.fuse_img_feat(x, idx, img, img_mask, text_mask=src_tokens.ne(self.padding_idx)))
                 idx += 1
             
         # encoder layers
@@ -504,7 +502,7 @@ class TransformerEncoder(FairseqEncoder):
         if self.is_fusion_top:
             for img, img_mask in zip(imgs_list, img_masks_list):
                 img = img.transpose(0, 1)
-                xs.append(self.fuse_img_feat(x, idx, img, img_mask))
+                xs.append(self.fuse_img_feat(x, idx, img, img_mask, text_mask=src_tokens.ne(self.padding_idx)))
                 idx += 1
 
         x = self.f(xs, fun='sum')

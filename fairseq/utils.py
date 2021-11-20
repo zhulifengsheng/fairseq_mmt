@@ -701,25 +701,34 @@ def eval_bool(x, default=False):
         return default
 
 class Recorder():
-    def __init__(self):
-        if os.path.exists('gate.pt'):
-            os.remove('gate.pt')
+    def __init__(self, args):
+        gate_path = os.path.join(args.save_dir, 'gate.txt')
+        self.map_path = os.path.join(args.save_dir, 'visualization')
+        self.out = open(gate_path, 'w', encoding='utf-8')
+
+        if os.path.exists(gate_path):
+            os.remove(gate_path)
+        if not os.path.exists(self.map_path):
+            os.mkdir(self.map_path)
+        
         self.n=0
 
     def record_map(self, map):
-        torch.save(map, 'visualization/'+str(self.n)+'map.pth', _use_new_zipfile_serialization=False)
+        torch.save(map, os.path.join(self.map_path, str(self.n)+'map.pth'), _use_new_zipfile_serialization=False)
         self.n += 1
 
-    def record_gate(self, gate):
-        gate = torch.mean(gate, dim = -1)
-        gate = torch.mean(gate, dim = 0)
-        try:
-            gate_before = torch.load('gate.pt')
-            gate_cat = torch.cat((gate_before, gate))
-            if not gate.equal(gate_before.unsqueeze(-1)[-1]):
-                torch.save(gate_cat, 'gate.pt')
-        except:
-            torch.save(gate, 'gate.pt')
+    def record_gate(self, gate, mask):
+        gate = gate.transpose(0, 1).contiguous()
+        print(gate[mask].flatten().tolist(), file=self.out)
+        # gate = torch.mean(gate, dim = -1)
+        # gate = torch.mean(gate, dim = 0)
+        # try:
+        #     gate_before = torch.load('gate.pt')
+        #     gate_cat = torch.cat((gate_before, gate))
+        #     if not gate.equal(gate_before.unsqueeze(-1)[-1]):
+        #         torch.save(gate_cat, 'gate.pt')
+        # except:
+        #     torch.save(gate, 'gate.pt')
         
-        x = torch.load('gate.pt')
-        print(torch.mean(x))
+        # x = torch.load('gate.pt')
+        # print(torch.mean(x))
