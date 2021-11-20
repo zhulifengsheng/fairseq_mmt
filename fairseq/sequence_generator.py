@@ -6,6 +6,7 @@
 import math
 from typing import Dict, List, Optional
 
+import os
 import torch
 import torch.nn as nn
 from fairseq import search, utils
@@ -278,8 +279,8 @@ class SequenceGenerator(nn.Module):
                 else:
                     img_masks.append(None)
 
-            net_input['img_masks'] = img_masks
-            net_input['imgs'] = imgs
+            net_input['img_masks_list'] = img_masks
+            net_input['imgs_list'] = imgs
 
         encoder_outs = self.model.forward_encoder(net_input)
 

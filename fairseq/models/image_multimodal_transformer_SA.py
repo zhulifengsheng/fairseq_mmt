@@ -412,7 +412,7 @@ class TransformerEncoder(FairseqEncoder):
         merge = torch.cat([output, text], dim=-1)
         gate = torch.sigmoid(self.gate_denses[idx](merge))
         
-        # self.recoder.record_gate(gate.cpu())
+        self.recoder.record_gate(gate.cpu())
         # _map = _map[:,:,1:].softmax(dim=-1)
         # print(_map.shape)
         # self.recoder.record_map(_map.cpu())

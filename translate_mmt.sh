@@ -12,7 +12,7 @@ mask_data=mask0
 image_feat=vit_tiny_patch16_384
 
 who=test
-random_image_translation=0
+random_image_translation=1
 length_penalty=0.8
 
 # set tag
@@ -109,18 +109,18 @@ eval $cmd
 python3 rerank.py $model_dir/hypo.txt $model_dir/hypo.sorted
 
 if [ $task == "multi30k-en2de" ] && [ $who == "test" ]; then
-	ref=data/multi30k-en-de/test_origin.2016.de
+	ref=data/multi30k/test.2016.de
 elif [ $task == "multi30k-en2de" ] && [ $who == "test1" ]; then
-	ref=data/multi30k-en-de/test_origin.2017.de
+	ref=data/multi30k/test.2017.de
 elif [ $task == "multi30k-en2de" ] && [ $who == "test2" ]; then
-	ref=data/multi30k-en-de/test_origin.coco.de
+	ref=data/multi30k/test.coco.de
 
 elif [ $task == "multi30k-en2fr" ] && [ $who == 'test' ]; then
-	ref=data/multi30k-en-fr/test_origin.2016.fr
+	ref=data/multi30k/test.2016.fr
 elif [ $task == "multi30k-en2fr" ] && [ $who == 'test1' ]; then
-	ref=data/multi30k-en-fr/test_origin.2017.fr
+	ref=data/multi30k/test.2017.fr
 elif [ $task == "multi30k-en2fr" ] && [ $who == 'test2' ]; then
-	ref=data/multi30k-en-fr/test_origin.coco.fr
+	ref=data/multi30k/test.coco.fr
 fi	
 
 hypo=$model_dir/hypo.sorted
