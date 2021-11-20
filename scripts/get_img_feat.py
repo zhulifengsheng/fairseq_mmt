@@ -41,10 +41,10 @@ def get_filenames(path):
 if __name__ == "__main__":
     # please see scripts/README.md firstly. 
     parser = argparse.ArgumentParser(description='which dataset')
-    parser.add_argument('--dataset', type=str, choices=['train', 'valid', 'test2016', 'test2017', 'testcoco'], help='which dataset')
+    parser.add_argument('--dataset', type=str, choices=['train', 'val', 'test2016', 'test2017', 'testcoco'], help='which dataset')
     args = parser.parse_args()
 
-    flickr30k_path = '../flickr30k'
+    flickr30k_path = '/home/lvchuanhao/flickr30k'
     dataset = args.dataset
     model_name = dic_model[0]
     save_dir = os.path.join('data', model_name)
@@ -79,10 +79,10 @@ if __name__ == "__main__":
                 tmp = []
     
     res = torch.cat(tmp).cpu()
-    print('feature shape:', res.shape, ',save in:', save_dir+'/'+dic2[dataset]+'.pth')
     if count > 1:
         torch.save(res, os.path.join(save_dir, 'final'+dic2[dataset]+'.pth'))
     else:
+        print('feature shape:', res.shape, ',save in:', save_dir+'/'+dic2[dataset]+'.pth')
         torch.save(res, os.path.join(save_dir, dic2[dataset]+'.pth'))
     del tmp
     
@@ -92,7 +92,7 @@ if __name__ == "__main__":
             _tmp.append(torch.load(os.path.join(save_dir, str(i)+dic2[dataset]+'.pth')))
         _tmp.append(torch.load(os.path.join(save_dir, 'final'+dic2[dataset]+'.pth')))
         res = torch.cat(_tmp).cpu()
-        print(dataset, res.shape, 'save in: ', save_dir)
+        print('feature shape:', res.shape, ',save in:', save_dir+'/'+dic2[dataset]+'.pth')
         torch.save(res, os.path.join(save_dir, dic2[dataset]+'.pth'))
         
         # delete  

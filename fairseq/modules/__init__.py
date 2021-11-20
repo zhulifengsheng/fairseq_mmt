@@ -35,6 +35,7 @@ from .transpose_last import TransposeLast
 from .unfold import unfold1d
 from .transformer_layer import TransformerDecoderLayer, TransformerEncoderLayer
 from .vggblock import VGGBlock
+from .selective_attention import SelectiveAttention
 
 __all__ = [
     "AdaptiveInput",
@@ -65,6 +66,7 @@ __all__ = [
     "PositionalEmbedding",
     "SamePad",
     "ScalarBias",
+    "SelectiveAttention",
     "SinusoidalPositionalEmbedding",
     "TransformerSentenceEncoderLayer",
     "TransformerSentenceEncoder",

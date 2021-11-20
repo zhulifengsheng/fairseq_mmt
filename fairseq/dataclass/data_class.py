@@ -297,10 +297,12 @@ class DatasetParams(FairseqDataclass):
         default=False,
         metadata={"help": "ignore too long or too short lines in valid and test set"},
     )
-    max_tokens: Optional[int] = field(
+    #max_tokens: Optional[int] = field(    
+    max_tokens: int = field(    # I have to fix here, because a bug(fairseq-train: error: argument --max-tokens: invalid typing.Optional[int] value: '4096')
         default=None, metadata={"help": "maximum number of tokens in a batch"}
     )
-    batch_size: Optional[int] = field(
+    #batch_size: Optional[int] = field(
+    batch_size: int = field(
         default=None, metadata={"help": "number of examples in a batch"}
     )
     required_batch_size_multiple: int = field(

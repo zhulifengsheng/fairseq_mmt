@@ -5,11 +5,11 @@ class ImageDataset(torch.utils.data.Dataset):
     """
     For loading image datasets
     """
-    def __init__(self, path: str):
-        self.img_feat = torch.load(path+'.pth')
+    def __init__(self, feat_path: str, mask_path: str):
+        self.img_feat = torch.load(feat_path)
         self.img_feat_mask = None
-        if os.path.exists(path+'_mask.pth'):
-            self.img_feat_mask = torch.load(path+'_mask.pth')
+        if os.path.exists(mask_path):
+            self.img_feat_mask = torch.load(mask_path)
 
         self.size = self.img_feat.shape[0]
 

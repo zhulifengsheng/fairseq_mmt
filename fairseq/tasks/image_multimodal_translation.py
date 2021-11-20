@@ -3,7 +3,6 @@ import json
 import logging
 import os
 from argparse import Namespace
-from fairseq.file_io import PathManager
 
 import numpy as np
 from fairseq import metrics, options, utils
@@ -11,7 +10,7 @@ from fairseq.data import (
     AppendTokenDataset,
     ConcatDataset,
     LanguagePairDataset,
-    #ImgLanguagePairDataset,
+    ImageLanguagePairDataset,
     PrependTokenDataset,
     StripTokenDataset,
     TruncateDataset,
@@ -141,22 +140,24 @@ def load_langpair_dataset(
                 align_path, None, dataset_impl
             )
 
-    img_datasets = []
+    img_dataset_list = []
     for image_feat_path in image_feat_path_list:
-        local_pth_path = PathManager.get_local_path(os.path.join(image_feat_path, split+'.pth'))
-        print(local_pth_path)
-        exit()
-        img_dataset = ImageDataset(os.path.join(image_feat_path, split+'.pth'))
+        # get image feature path
+        feat_pth_path = os.path.join(image_feat_path, split+'.pth')
+        mask_pth_path = os.path.join(image_feat_path, split+'_mask.pth')
+        assert os.path.exists(feat_pth_path) == True, 'not found image feature'
+
+        img_dataset = ImageDataset(feat_pth_path, mask_pth_path)
         assert len(img_dataset) == len(src_dataset)
-        img_datasets.append(img_dataset)
+        img_dataset_list.append(img_dataset)
     
     tgt_dataset_sizes = tgt_dataset.sizes if tgt_dataset is not None else None
-    exit()
-    return LanguagePairDataset(
+    
+    return ImageLanguagePairDataset(
         src_dataset,
         src_dataset.sizes,
         src_dict,
-        img_datasets,
+        img_dataset_list,
         tgt_dataset,
         tgt_dataset_sizes,
         tgt_dict,
@@ -168,7 +169,6 @@ def load_langpair_dataset(
         shuffle=shuffle,
         pad_to_multiple=pad_to_multiple,
     )
-
 
 @register_task("image_mmt")
 class ImageMMTTask(LegacyFairseqTask):
@@ -328,7 +328,7 @@ class ImageMMTTask(LegacyFairseqTask):
             pad_to_multiple=self.args.required_seq_len_multiple,
             image_feat_path_list=self.args.image_feat_path
         )
-
+    '''
     def build_dataset_for_inference(self, src_tokens, src_lengths, constraints=None):
         return LanguagePairDataset(
             src_tokens,
@@ -337,6 +337,7 @@ class ImageMMTTask(LegacyFairseqTask):
             tgt_dict=self.target_dictionary,
             constraints=constraints,
         )
+    '''
 
     def build_model(self, args):
         model = super().build_model(args)

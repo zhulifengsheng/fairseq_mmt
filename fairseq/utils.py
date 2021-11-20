@@ -699,3 +699,27 @@ def eval_bool(x, default=False):
         return bool(eval(x))
     except TypeError:
         return default
+
+class Recorder():
+    def __init__(self):
+        if os.path.exists('gate.pt'):
+            os.remove('gate.pt')
+        self.n=0
+
+    def record_map(self, map):
+        torch.save(map, 'visualization/'+str(self.n)+'map.pth', _use_new_zipfile_serialization=False)
+        self.n += 1
+
+    def record_gate(self, gate):
+        gate = torch.mean(gate, dim = -1)
+        gate = torch.mean(gate, dim = 0)
+        try:
+            gate_before = torch.load('gate.pt')
+            gate_cat = torch.cat((gate_before, gate))
+            if not gate.equal(gate_before.unsqueeze(-1)[-1]):
+                torch.save(gate_cat, 'gate.pt')
+        except:
+            torch.save(gate, 'gate.pt')
+        
+        x = torch.load('gate.pt')
+        print(torch.mean(x))

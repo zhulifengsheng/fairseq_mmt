@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 set -e
 
-device=0,1
+device=6,7
 task=multi30k-en2de
 image_feat=vit_tiny_patch16_384
 mask_data=mask0
@@ -51,10 +51,10 @@ elif [ $task == 'multi30k-en2fr' ]; then
 fi
 
 criterion=label_smoothed_cross_entropy
-fp16=1
+fp16=1 #0
 lr=0.005
 warmup=2000
-max_tokens=4096
+max_tokens=512 #4096
 update_freq=1
 keep_last_epochs=10
 patience=10
@@ -63,7 +63,6 @@ dropout=0.3
 
 arch=image_multimodal_transformer_SA_top
 
-# SA_text_dropout=0.0
 # SA_attention_dropout=0.1
 # SA_image_dropout=0.1
 
@@ -86,30 +85,17 @@ cp ${BASH_SOURCE[0]} $save_dir/train.sh
 gpu_num=`echo "$device" | awk '{split($0,arr,",");print length(arr)}'`
 
 cmd="fairseq-train data-bin/$data_dir
+  --save-dir $save_dir
   --distributed-world-size $gpu_num -s $src_lang -t $tgt_lang
   --arch $arch
-  --task image_mmt
-  --image-feat-path $image_feat_path
-  --image-feat-dim $image_feat_dim
-  --optimizer adam 
-  --lr-scheduler inverse_sqrt 
-  --warmup-init-lr 1e-07 
-  --warmup-updates $warmup
-  --lr $lr 
-  --min-lr 1e-09
-  --criterion $criterion 
-  --label-smoothing 0.1
-  --max-tokens $max_tokens
-  --update-freq $update_freq
-  --find-unused-parameters
-  --no-progress-bar
-  --adam-betas '(0.9, 0.98)'
   --dropout $dropout
+  --criterion $criterion --label-smoothing 0.1
+  --task image_mmt --image-feat-path $image_feat_path --image-feat-dim $image_feat_dim
+  --optimizer adam --adam-betas '(0.9, 0.98)'
+  --lr $lr --min-lr 1e-09 --lr-scheduler inverse_sqrt --warmup-init-lr 1e-07 --warmup-updates $warmup
+  --max-tokens $max_tokens --update-freq $update_freq --max-update $max_update
+  --find-unused-parameters
   --share-all-embeddings
-  --log-interval 10000
-  --ddp-backend no_c10d
-  --max-update $max_update
-  --save-dir $save_dir
   --patience $patience
   --keep-last-epochs $keep_last_epochs"
 
@@ -119,9 +105,6 @@ fi
 
 if [ -n "$SA_image_dropout" ]; then
 cmd=${cmd}" --SA-image-dropout "${SA_image_dropout}
-fi
-if [ -n "$SA_text_dropout" ]; then
-cmd=${cmd}" --SA-text-dropout "${SA_text_dropout}
 fi
 if [ -n "$SA_attention_dropout" ]; then
 cmd=${cmd}" --SA-attention-dropout "${SA_attention_dropout}

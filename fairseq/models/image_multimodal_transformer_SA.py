@@ -26,6 +26,7 @@ from fairseq.modules import (
     SinusoidalPositionalEmbedding,
     TransformerDecoderLayer,
     TransformerEncoderLayer,
+    SelectiveAttention,
 )
 from fairseq.modules.quant_noise import quant_noise as apply_quant_noise_
 from torch import Tensor
@@ -173,6 +174,14 @@ class TransformerModel(FairseqEncoderDecoderModel):
         parser.add_argument('--quant-noise-scalar', type=float, metavar='D', default=0,
                             help='scalar quantization noise and scalar quantization at training time')
         # fmt: on
+        # args for image MMT
+        parser.add_argument('--SA-image-dropout', type=float, default=0.1,
+                            help='image feat dropout before SA')
+        parser.add_argument('--SA-attention-dropout', type=float, default=0.1,
+                            help='selective attn\'s dropout')
+
+        parser.add_argument('--is-fusion-top', type=bool,
+                            help='fuse img feat after text encoding')
 
     @classmethod
     def build_model(cls, args, task):
@@ -255,6 +264,8 @@ class TransformerModel(FairseqEncoderDecoderModel):
         src_tokens,
         src_lengths,
         prev_output_tokens,
+        imgs_list,
+        img_masks_list,
         return_all_hiddens: bool = True,
         features_only: bool = False,
         alignment_layer: Optional[int] = None,
@@ -267,7 +278,8 @@ class TransformerModel(FairseqEncoderDecoderModel):
         which are not supported by TorchScript.
         """
         encoder_out = self.encoder(
-            src_tokens, src_lengths=src_lengths, return_all_hiddens=return_all_hiddens
+            src_tokens, src_lengths=src_lengths, return_all_hiddens=return_all_hiddens,
+            img_masks_list=img_masks_list, imgs_list=imgs_list,
         )
         decoder_out = self.decoder(
             prev_output_tokens,
@@ -360,6 +372,53 @@ class TransformerEncoder(FairseqEncoder):
             self.layer_norm = LayerNorm(embed_dim)
         else:
             self.layer_norm = None
+        
+        # code for image MMT
+        self.selective_attns = nn.ModuleList([])
+        self.selective_attns.extend([SelectiveAttention(qdim=embed_dim, kdim=i,
+                        vdim=i, attn_dim=embed_dim,
+                        intermediate_dim=embed_dim, output_dim=embed_dim,
+                        num_heads=1, attn_drop=args.SA_attention_dropout) for i in args.image_feat_dim])
+
+        self.gate_denses = nn.ModuleList([])
+        self.gate_denses.extend([nn.Linear(2 * args.encoder_embed_dim, args.encoder_embed_dim) for i in args.image_feat_dim])
+
+        self.image_dropout_module = FairseqDropout(
+            args.SA_image_dropout, module_name=self.__class__.__name__
+        )
+        
+        self.is_fusion_top = args.is_fusion_top
+
+        self.recoder = utils.Recorder()
+
+    def f(self, l, fun='sum'):
+        if fun == 'avg':
+            size = len(l)
+            res = l[0]
+            for i in l[1:]:
+                res = res + i
+            return res / size
+
+        elif fun == 'sum':
+            res = l[0]
+            for i in l[1:]:
+                res = res + i
+            return res
+
+    def fuse_img_feat(self, text, idx, image, image_mask):
+        image = self.image_dropout_module(image)
+        output, _map = self.selective_attns[idx](query=text, key=image, value=image, key_padding_mask=image_mask)
+
+        merge = torch.cat([output, text], dim=-1)
+        gate = torch.sigmoid(self.gate_denses[idx](merge))
+        
+        # self.recoder.record_gate(gate.cpu())
+        # _map = _map[:,:,1:].softmax(dim=-1)
+        # print(_map.shape)
+        # self.recoder.record_map(_map.cpu())
+
+        res = (1 - gate) * text + gate * output
+        return res
 
     def build_encoder_layer(self, args):
         return TransformerEncoderLayer(args)
@@ -384,6 +443,8 @@ class TransformerEncoder(FairseqEncoder):
         self,
         src_tokens,
         src_lengths,
+        imgs_list,
+        img_masks_list,
         return_all_hiddens: bool = False,
         token_embeddings: Optional[torch.Tensor] = None,
     ):
@@ -974,6 +1035,10 @@ def image_multimodal_transformer_SA_top(args):
     args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 256)
     args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 4)
     args.decoder_layers = getattr(args, "decoder_layers", 4)
+
+    # args for image MMT
+    args.is_fusion_top = getattr(args, 'is_fusion_top', True)
+
     base_architecture(args)
 
 

@@ -37,7 +37,7 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 
 # multi30k data & flickr30k entities
 we use multi30k data from [here](https://github.com/LividWo/Revisit-MMT)  
-The offical multi30k data from [here](https://github.com/multi30k/dataset)
+The offical multi30k data from [here](https://github.com/multi30k/dataset)  
 flickr30k entities data from [here](https://github.com/BryanPlummer/flickr30k_entities)
 
 # VIT image feature
