@@ -58,13 +58,12 @@ max_tokens=512 #4096
 update_freq=1
 keep_last_epochs=10
 patience=10
-max_update=6000
+max_update=8000
 dropout=0.3
 
 arch=image_multimodal_transformer_SA_top
-
-# SA_attention_dropout=0.1
-# SA_image_dropout=0.1
+SA_attention_dropout=0.1
+SA_image_dropout=0.1
 
 if [ $image_feat == "vit_tiny_patch16_384" ]; then
 	image_feat_path=data/$image_feat

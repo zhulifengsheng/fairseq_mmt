@@ -12,7 +12,7 @@ mask_data=mask0
 image_feat=vit_tiny_patch16_384
 
 who=test
-random_image_translation=1
+random_image_translation=0
 length_penalty=0.8
 
 # set tag
@@ -126,8 +126,8 @@ fi
 hypo=$model_dir/hypo.sorted
 python3 meteor.py $hypo $ref > $model_dir/meteor_$who.log
 cat $model_dir/meteor_$who.log
-echo $length_penalty
-#python3 get_de_acc.py $hypo $who
-#python3 get_fr_acc.py $hypo $who
-#python3 get_p_acc.py $hypo $who
-#python3 get_en2fr-people_acc.py $hypo $who
+
+#python3 acc_de_color.py $hypo $who
+#python3 acc_fr_color.py $hypo $who
+#python3 acc_de_people.py $hypo $who
+#python3 acc_fr_people.py $hypo $who
