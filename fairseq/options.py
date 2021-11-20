@@ -409,6 +409,10 @@ def add_generation_args(parser):
     # special decoding format for advanced decoding.
     group.add_argument('--decoding-format', default=None, type=str, choices=['unigram', 'ensemble', 'vote', 'dp', 'bs'])
     # fmt: on
+    group.add_argument('--output', metavar='FILE', help='output file')
+    group.add_argument('--random-image-translation', action='store_true', default=False,
+                        help='random image translation')
+
     return group
 
 

@@ -20,6 +20,7 @@ class SequenceGenerator(nn.Module):
         self,
         models,
         tgt_dict,
+        args,       # extra code
         beam_size=1,
         max_len_a=0,
         max_len_b=200,
@@ -104,6 +105,32 @@ class SequenceGenerator(nn.Module):
         self.lm_weight = lm_weight
         if self.lm_model is not None:
             self.lm_model.eval()
+        
+        # extra mmt code for random image translation
+        self.args = args
+        if hasattr(args, 'random_image_translation') and args.random_image_translation:
+            if args.gen_subset == 'test':
+                _prefix = 'test2016'
+            elif args.gen_subset == 'test1':
+                _prefix = 'test2017'
+            elif args.gen_subset == 'test2':
+                _prefix = 'testcoco'
+            _list = []
+            f = open(_prefix+'_random_img_order.txt', 'r')
+            for line in f:
+                _list.append(int(line.strip()))
+            self.new_img_order = torch.tensor(_list)
+            f.close()
+            # load image again for random
+            self.test_image_feats = []
+            self.test_image_feat_masks = []
+            for i in args.image_feat_path:
+                self.test_image_feats.append(torch.load(os.path.join(i, args.gen_subset+'.pth')))
+
+                if os.path.exists(os.path.join(i, args.gen_subset+'_mask.pth')):
+                    self.test_image_feat_masks.append(torch.load(os.path.join(i, args.gen_subset+'_mask.pth')))
+                else:
+                    self.test_image_feat_masks.append(None)
 
     def cuda(self):
         self.model.cuda()
@@ -234,6 +261,26 @@ class SequenceGenerator(nn.Module):
             self.min_len <= max_len
         ), "min_len cannot be larger than max_len, please adjust these!"
         # compute the encoder output for each beam
+
+        # mmt code for random image translation
+        if hasattr(self.args, 'random_image_translation') and self.args.random_image_translation:
+            device = sample['id'].device
+            self.new_img_order = self.new_img_order.to(device)
+            _len = sample['id'].shape[0]
+            for i in range(_len):
+                sample['id'][i] = self.new_img_order[sample['id'][i].item()]
+
+            imgs = [torch.index_select(i.to(device), 0, sample['id']) for i in self.test_image_feats]
+            img_masks = []
+            for i in self.test_image_feat_masks:
+                if i is not None:
+                    img_masks.append(torch.index_select(i.to(device), 0, sample['id']))
+                else:
+                    img_masks.append(None)
+
+            net_input['img_masks'] = img_masks
+            net_input['imgs'] = imgs
+
         encoder_outs = self.model.forward_encoder(net_input)
 
         # placeholder of indices for bsz * beam_size to hold tokens and accumulative scores

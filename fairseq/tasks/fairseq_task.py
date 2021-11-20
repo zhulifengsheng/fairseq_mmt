@@ -373,6 +373,7 @@ class FairseqTask(object):
         return seq_gen_cls(
             models,
             self.target_dictionary,
+            args,           # extra code
             beam_size=getattr(args, "beam", 5),
             max_len_a=getattr(args, "max_len_a", 0),
             max_len_b=getattr(args, "max_len_b", 200),

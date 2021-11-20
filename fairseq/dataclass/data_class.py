@@ -519,10 +519,12 @@ class CheckpointParams(FairseqDataclass):
 
 @dataclass
 class CommonEvalParams(FairseqDataclass):
-    path: Optional[str] = field(
+    #path: Optional[str] = field(
+    path: str = field(
         default=None, metadata={"help": "path(s) to model file(s), colon separated"}
     )
-    remove_bpe: Optional[str] = field(
+    #remove_bpe: Optional[str] = field(
+    remove_bpe: str = field(
         default=None,
         metadata={
             "help": "remove BPE tokens before scoring (can be set to sentencepiece)",
