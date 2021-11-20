@@ -471,6 +471,8 @@ class TransformerEncoder(FairseqEncoder):
                   hidden states of shape `(src_len, batch, embed_dim)`.
                   Only populated if *return_all_hiddens* is True.
         """
+        #torch.save(src_tokens.cpu(), 'visualization/'+str(self.recoder.n)+'tokens.pth', _use_new_zipfile_serialization=False)
+
         x, encoder_embedding = self.forward_embedding(src_tokens, token_embeddings)
 
         # B x T x C -> T x B x C
@@ -481,6 +483,14 @@ class TransformerEncoder(FairseqEncoder):
 
         encoder_states = [] if return_all_hiddens else None
 
+        xs = []
+        idx = 0
+        if not self.is_fusion_top:
+            for img, img_mask in zip(imgs_list, img_masks_list):
+                img = img.transpose(0, 1)
+                xs.append(self.fuse_img_feat(x, idx, img, img_mask))
+                idx += 1
+            
         # encoder layers
         for layer in self.layers:
             x = layer(x, encoder_padding_mask)
@@ -490,6 +500,14 @@ class TransformerEncoder(FairseqEncoder):
 
         if self.layer_norm is not None:
             x = self.layer_norm(x)
+
+        if self.is_fusion_top:
+            for img, img_mask in zip(imgs_list, img_masks_list):
+                img = img.transpose(0, 1)
+                xs.append(self.fuse_img_feat(x, idx, img, img_mask))
+                idx += 1
+
+        x = self.f(xs, fun='sum')
 
         return EncoderOut(
             encoder_out=x,  # T x B x C
