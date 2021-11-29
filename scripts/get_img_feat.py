@@ -16,6 +16,14 @@ dic = {
     'val': 'flickr30k',
     }
 
+dic1 = {
+    'test2017': 'test_2017_flickr.txt',
+    'testcoco': 'test_2017_mscoco.txt',
+    'test2016': 'test_2016_flickr.txt',
+    'train': 'train.txt',
+    'val': 'val.txt',
+    }
+
 dic2 = {
     'test2017': 'test1', 
     'testcoco': 'test2',
@@ -44,6 +52,7 @@ if __name__ == "__main__":
     parser.add_argument('--dataset', type=str, choices=['train', 'val', 'test2016', 'test2017', 'testcoco'], help='which dataset')
     args = parser.parse_args()
 
+    # /path/flickr30k
     flickr30k_path = '/home/lvchuanhao/flickr30k'
     dataset = args.dataset
     model_name = dic_model[0]
@@ -60,7 +69,7 @@ if __name__ == "__main__":
     tmp = []
     count = 1
 
-    filenames = get_filenames(os.path.join(flickr30k_path, dataset+'_images.txt'))
+    filenames = get_filenames(os.path.join(flickr30k_path, dic1[dataset]))
     
     with torch.no_grad():
         for i in tqdm(filenames):

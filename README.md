@@ -36,8 +36,22 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 * sacrebleu version == 1.5.1
 
 # multi30k data & flickr30k entities
-Multi30k data from [here](https://github.com/multi30k/dataset) and [here](https://www.statmt.org/wmt17/multimodal-task.html)
-flickr30k entities data from [here](https://github.com/BryanPlummer/flickr30k_entities)
+Multi30k data from [here](https://github.com/multi30k/dataset) and [here](https://www.statmt.org/wmt17/multimodal-task.html)  
+flickr30k entities data from [here](https://github.com/BryanPlummer/flickr30k_entities)  
+We get multi30k text data from [Revisit-MMT](https://github.com/LividWo/Revisit-MMT)
+```bash
+# create a directory
+flickr30k
+├─ flickr30k-images
+├─ test2017-images
+├─ test_2016_flickr.txt
+├─ test_2017_flickr.txt
+├─ test_2017_mscoco.txt
+├─ test_2018_flickr.txt
+├─ testcoco-images
+├─ train.txt
+└─ val.txt
+```
 
 # Image feature
 ```bash

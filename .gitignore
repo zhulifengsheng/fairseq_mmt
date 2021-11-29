@@ -139,4 +139,5 @@ experimental/*
 *.pth
 
 # masking
-data/masking/*
+data/masking/*.position
+data/masking/*.en
