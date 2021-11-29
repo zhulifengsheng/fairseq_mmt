@@ -137,3 +137,6 @@ experimental/*
 # DATA
 *.pt
 *.pth
+
+# masking
+data/masking/*

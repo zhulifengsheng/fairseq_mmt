@@ -2,7 +2,7 @@
 set -e
 
 # set device
-gpu=0
+gpu=7
 
 model_root_dir=checkpoints
 
@@ -11,8 +11,8 @@ task=multi30k-en2de
 mask_data=mask0
 image_feat=vit_tiny_patch16_384
 
-who=test
-random_image_translation=0
+who=test	#test1, test2
+random_image_translation=0 #1
 length_penalty=0.8
 
 # set tag
@@ -20,19 +20,19 @@ model_dir_tag=$image_feat/$image_feat-$mask_data
 
 if [ $task == "multi30k-en2de" ]; then
 	tgt_lang=de
-        if [ $mask_data == "mask0" ]; then
-                data_dir=multi30k.en-de
+	if [ $mask_data == "mask0" ]; then
+	        data_dir=multi30k.en-de
 	elif [ $mask_data == "mask1" ]; then
 	        data_dir=multi30k.en-de.mask1
 	elif [ $mask_data == "mask2" ]; then
-      		data_dir=multi30k.en-de.mask2
+	        data_dir=multi30k.en-de.mask2
 	elif [ $mask_data == "mask3" ]; then
 	        data_dir=multi30k.en-de.mask3
 	elif [ $mask_data == "mask4" ]; then
 	        data_dir=multi30k.en-de.mask4
-        elif [ $mask_data == "maskc" ]; then
+	elif [ $mask_data == "maskc" ]; then
 	        data_dir=multi30k.en-de.maskc
-        elif [ $mask_data == "maskp" ]; then
+	elif [ $mask_data == "maskp" ]; then
 	        data_dir=multi30k.en-de.maskp
 	fi
 elif [ $task == 'multi30k-en2fr' ]; then
@@ -47,9 +47,9 @@ elif [ $task == 'multi30k-en2fr' ]; then
 	        data_dir=multi30k.en-fr.mask3
 	elif [ $mask_data == "mask4" ]; then
 	        data_dir=multi30k.en-fr.mask4
-        elif [ $mask_data == "maskc" ]; then
+	elif [ $mask_data == "maskc" ]; then
 	        data_dir=multi30k.en-fr.maskc
-        elif [ $mask_data == "maskp" ]; then
+	elif [ $mask_data == "maskp" ]; then
 	        data_dir=multi30k.en-fr.maskp
 	fi
 fi

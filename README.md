@@ -36,11 +36,10 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 * sacrebleu version == 1.5.1
 
 # multi30k data & flickr30k entities
-we use multi30k data from [here](https://github.com/LividWo/Revisit-MMT)  
-The offical multi30k data from [here](https://github.com/multi30k/dataset)  
+Multi30k data from [here](https://github.com/multi30k/dataset) and [here](https://www.statmt.org/wmt17/multimodal-task.html)
 flickr30k entities data from [here](https://github.com/BryanPlummer/flickr30k_entities)
 
-# VIT image feature
+# Image feature
 ```bash
 # please read scripts/README.md
 python3 scripts/get_img_feat.py --dataset train
@@ -59,4 +58,16 @@ sh train_mmt.sh
 # translation
 ```bash
 sh translation_mmt.sh
+```
+
+# masking data
+```bash
+pip install stanfordcorenlp 
+wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
+unzip stanford-corenlp-latest.zip
+cd fairseq_mmt
+python3 record_masking_position.py 
+
+cd data/masking
+
 ```
