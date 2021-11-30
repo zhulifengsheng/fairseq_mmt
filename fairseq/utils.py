@@ -700,7 +700,7 @@ def eval_bool(x, default=False):
     except TypeError:
         return default
 
-class Recorder():
+class Recorder():   # follow Revisit-MMT
     def __init__(self, args):
         gate_path = os.path.join(args.save_dir, 'gate.txt')
         self.map_path = os.path.join(args.save_dir, 'visualization')
@@ -720,15 +720,3 @@ class Recorder():
     def record_gate(self, gate, mask):
         gate = gate.transpose(0, 1).contiguous()
         print(gate[mask].flatten().tolist(), file=self.out)
-        # gate = torch.mean(gate, dim = -1)
-        # gate = torch.mean(gate, dim = 0)
-        # try:
-        #     gate_before = torch.load('gate.pt')
-        #     gate_cat = torch.cat((gate_before, gate))
-        #     if not gate.equal(gate_before.unsqueeze(-1)[-1]):
-        #         torch.save(gate_cat, 'gate.pt')
-        # except:
-        #     torch.save(gate, 'gate.pt')
-        
-        # x = torch.load('gate.pt')
-        # print(torch.mean(x))

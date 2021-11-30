@@ -373,6 +373,7 @@ class TransformerEncoder(FairseqEncoder):
         else:
             self.layer_norm = None
         
+        self.args = args
         # code for image MMT
         self.selective_attns = nn.ModuleList([])
         self.selective_attns.extend([SelectiveAttention(qdim=embed_dim, kdim=i,
@@ -470,7 +471,8 @@ class TransformerEncoder(FairseqEncoder):
                   hidden states of shape `(src_len, batch, embed_dim)`.
                   Only populated if *return_all_hiddens* is True.
         """
-        #torch.save(src_tokens.cpu(), 'visualization/'+str(self.recoder.n)+'tokens.pth', _use_new_zipfile_serialization=False)
+        # import os
+        # torch.save(src_tokens.cpu(), os.path.join(self.args.save_dir, 'visualization', str(self.recoder.n)+'tokens.pth'), _use_new_zipfile_serialization=False)
 
         x, encoder_embedding = self.forward_embedding(src_tokens, token_embeddings)
 

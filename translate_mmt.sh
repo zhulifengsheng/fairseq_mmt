@@ -127,6 +127,9 @@ hypo=$model_dir/hypo.sorted
 python3 meteor.py $hypo $ref > $model_dir/meteor_$who.log
 cat $model_dir/meteor_$who.log
 
+# cal gate
+python3 scripts/visual_awareness.py --input $model_dir_tag/gated.txt 
+
 #python3 acc_de_color.py $hypo $who
 #python3 acc_fr_color.py $hypo $who
 #python3 acc_de_people.py $hypo $who
