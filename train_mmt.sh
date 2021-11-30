@@ -4,7 +4,7 @@ set -e
 device=6,7
 task=multi30k-en2de
 image_feat=vit_tiny_patch16_384
-mask_data=mask0
+mask_data=mask1
 tag=$image_feat/$image_feat-$mask_data
 save_dir=checkpoints/$task/$tag
 

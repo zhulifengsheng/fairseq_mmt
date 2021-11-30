@@ -53,7 +53,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # /path/flickr30k
-    flickr30k_path = '/home/lvchuanhao/flickr30k'
+    flickr30k_path = '../flickr30k'
     dataset = args.dataset
     model_name = dic_model[0]
     save_dir = os.path.join('data', model_name)
