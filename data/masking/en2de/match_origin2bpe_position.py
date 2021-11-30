@@ -1,8 +1,12 @@
+import os
+data_path = os.path.abspath(os.path.join(os.getcwd(), "../.."))
+multi30k_dir = os.path.join(data_path, 'multi30k')
+
 count = 0
 _list = []
 
-_f = open('../multi30k/multi30k.en', 'r', encoding='utf-8')
-with open('../multi30k/multi30k-en-de.bpe.en', 'r', encoding='utf-8') as f:
+_f = open(os.path.join(multi30k_dir, 'multi30k.en'), 'r', encoding='utf-8')
+with open(os.path.join(multi30k_dir, 'multi30k-en-de.bpe.en'), 'r', encoding='utf-8') as f:
     for sentence_bpe, sentence in zip(f, _f):
         count += 1
         bpe =  sentence_bpe.strip().split()

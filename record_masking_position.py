@@ -1,7 +1,9 @@
 from stanfordcorenlp import StanfordCoreNLP
 from tqdm import tqdm
+
 # /path/stanford-corenlp-4.3.2
 nlp = StanfordCoreNLP('../stanford-corenlp-4.3.2')#, lang='de')
+
 # init
 count = 0
 

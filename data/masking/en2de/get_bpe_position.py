@@ -50,3 +50,6 @@ pos_bpe_people.close()
 pos_bpe_color.close()
 pos_bpe_noun.close()
 pos_bpe_nouns.close()
+
+# masking 1-4
+num = 1
