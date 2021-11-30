@@ -59,18 +59,10 @@ flickr30k
 python3 scripts/get_img_feat.py --dataset train
 ```
 
-# preprocess text data
+# train and test
 ```bash
 sh preprocess.sh
-```
-
-# train
-```bash
 sh train_mmt.sh
-```
-
-# translation
-```bash
 sh translation_mmt.sh
 ```
 
@@ -87,6 +79,10 @@ cd en2de
 python3 match_origin2bpe_position.py
 python3 get_bpe_position.py         # create mask1-4 data
 python3 create_masking_multi30k.py  # create mask color&people data
+
+sh preprocess_mmt.sh
 ```
 
 # visualization
+```bash
+```
