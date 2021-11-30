@@ -8,7 +8,7 @@ model_root_dir=checkpoints
 
 # set task
 task=multi30k-en2de
-mask_data=mask0
+mask_data=mask1
 image_feat=vit_tiny_patch16_384
 
 who=test	#test1, test2
@@ -127,10 +127,8 @@ hypo=$model_dir/hypo.sorted
 python3 meteor.py $hypo $ref > $model_dir/meteor_$who.log
 cat $model_dir/meteor_$who.log
 
-# cal gate
-python3 scripts/visual_awareness.py --input $model_dir_tag/gated.txt 
+# cal gate, follow Revisit-MMT
+#python3 scripts/visual_awareness.py --input $model_dir_tag/gated.txt 
 
-#python3 acc_de_color.py $hypo $who
-#python3 acc_fr_color.py $hypo $who
-#python3 acc_de_people.py $hypo $who
-#python3 acc_fr_people.py $hypo $who
+# cal accurary
+python3 cal_acc.py $hypo $who $task
