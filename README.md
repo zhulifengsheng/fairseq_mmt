@@ -76,7 +76,7 @@ sh translation_mmt.sh
 
 # masking data
 ```bash
-pip install stanfordcorenlp 
+pip3 install stanfordcorenlp 
 wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
 unzip stanford-corenlp-latest.zip
 cd fairseq_mmt
