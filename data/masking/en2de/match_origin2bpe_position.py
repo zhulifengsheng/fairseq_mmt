@@ -1,8 +1,8 @@
 count = 0
 _list = []
 
-_f = open('multi30k.en', 'r', encoding='utf-8')
-with open('multi30k-en-de.bpe.en', 'r', encoding='utf-8') as f:
+_f = open('../multi30k/multi30k.en', 'r', encoding='utf-8')
+with open('../multi30k/multi30k-en-de.bpe.en', 'r', encoding='utf-8') as f:
     for sentence_bpe, sentence in zip(f, _f):
         count += 1
         bpe =  sentence_bpe.strip().split()
