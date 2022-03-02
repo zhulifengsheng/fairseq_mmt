@@ -1,8 +1,15 @@
 multimodal machine translation(MMT) 
+# Our dependency
+
+* PyTorch version == 1.9.1
+* Python version == 3.6.7
+* timm version == 0.4.12
+* vizseq version == 0.1.15
+* nltk verison == 3.6.4
+* sacrebleu version == 1.5.1
+
 # Requirements and Installation
 
-* [PyTorch](http://pytorch.org/) version >= 1.5.0
-* Python version >= 3.6
 * For training new models, you'll also need an NVIDIA GPU and [NCCL](https://github.com/NVIDIA/nccl)
 * **To install fairseq** and develop locally:
 ```bash
@@ -25,15 +32,6 @@ pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cud
 * If you use Docker make sure to increase the shared memory size either with
 `--ipc=host` or `--shm-size` as command line options to `nvidia-docker run`.
 
-
-# Our dependency
-
-* PyTorch version == 1.9.1
-* Python version == 3.6.7
-* timm version == 0.4.12
-* vizseq version == 0.1.15
-* nltk verison == 3.6.4
-* sacrebleu version == 1.5.1
 
 # multi30k data & flickr30k entities
 Multi30k data from [here](https://github.com/multi30k/dataset) and [here](https://www.statmt.org/wmt17/multimodal-task.html)  
