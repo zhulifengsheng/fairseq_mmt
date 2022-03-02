@@ -8,7 +8,7 @@ multimodal machine translation(MMT)
 * nltk verison == 3.6.4
 * sacrebleu version == 1.5.1
 
-# Requirements and Installation
+# Install fairseq
 
 * For training new models, you'll also need an NVIDIA GPU and [NCCL](https://github.com/NVIDIA/nccl)
 * **To install fairseq** and develop locally:
