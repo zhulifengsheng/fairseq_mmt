@@ -56,7 +56,7 @@ if __name__ == "__main__":
     flickr30k_path = '../flickr30k'
     dataset = args.dataset
     model_name = dic_model[0]
-    save_dir = os.path.join('data', model_name)
+    save_dir = os.path.join('..', 'data', model_name)
     
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
