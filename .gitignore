@@ -144,3 +144,6 @@ data/masking/*.en
 
 data/masking/en2de/*.position
 data/masking/en2de/*.match
+
+# dir
+flickr30k_entities
