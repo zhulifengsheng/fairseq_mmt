@@ -1,7 +1,7 @@
 # preprocess masking data
 src='en'
 tgt='de'
-mask=mask1
+mask=mask3
 TEXT=data/multi30k-en-$tgt.$mask
 
 fairseq-preprocess --source-lang $src --target-lang $tgt \

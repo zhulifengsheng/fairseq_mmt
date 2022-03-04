@@ -1,10 +1,10 @@
 #! /usr/bin/bash
 set -e
 
-device=6,7
+device=2,3
 task=multi30k-en2de
 image_feat=vit_tiny_patch16_384
-mask_data=mask1
+mask_data=mask3
 tag=$image_feat/$image_feat-$mask_data
 save_dir=checkpoints/$task/$tag
 

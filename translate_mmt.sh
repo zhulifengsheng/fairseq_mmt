@@ -2,13 +2,13 @@
 set -e
 
 # set device
-gpu=7
+gpu=2
 
 model_root_dir=checkpoints
 
 # set task
 task=multi30k-en2de
-mask_data=mask1
+mask_data=mask4
 image_feat=vit_tiny_patch16_384
 
 who=test	#test1, test2

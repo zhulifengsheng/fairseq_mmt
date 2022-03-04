@@ -58,13 +58,18 @@ wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
 unzip stanford-corenlp-latest.zip
 cd fairseq_mmt
 cat data/multi30k/train.en data/multi30k/valid.en data/multi30k/test.2016.en > train_val_test2016.en
-python3 get_noun_from_f30k_entities.py 
+python3 get_and_record_noun_from_f30k_entities.py 
+python3 record_color_people_position.py
 
-cd data/masking
 # create en-de masking data
+cd data/masking
 python3 match_origin2bpe_position.py
-python3 create_maskding1234_multi30k.py         # create mask1-4 data
-#python3 create_maskingcp_multi30k.py  # create mask color&people data
+python3 create_masking_multi30k.py         # create mask1-4 & color & people data 
 
 sh preprocess_mmt.sh
+```
+
+# Visualization
+```bash
+
 ```
