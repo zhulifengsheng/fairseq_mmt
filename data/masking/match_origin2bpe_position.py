@@ -1,21 +1,19 @@
 import os
 
-src-tgt = 'en-de'
+src_tgt = 'en-de'
 
 now_path = os.getcwd()
-if os.path.exists(os.path.join(now_path, 'data')):
-    os.mkdir(os.path.join(now_path, 'data'))
-if os.path.exists(os.path.join(now_path, 'data', src-tgt)):
-    os.mkdir(os.path.join(now_path, 'data', src-tgt))
+if not os.path.exists(os.path.join(now_path, 'data', src_tgt)):
+    os.mkdir(os.path.join(now_path, 'data', src_tgt))
 
-data_path = os.path.abspath(os.path.join(os.getcwd(), "../.."))
+data_path = os.path.abspath(os.path.join(os.getcwd(), ".."))
 multi30k_dir = os.path.join(data_path, 'multi30k')
 
 count = 0
 _list = []
 
 _f = open(os.path.join(multi30k_dir, 'multi30k.en'), 'r', encoding='utf-8')
-with open(os.path.join(multi30k_dir, 'multi30k-'+src-tgt+'.bpe.en'), 'r', encoding='utf-8') as f:
+with open(os.path.join(multi30k_dir, 'multi30k-'+src_tgt+'.bpe.en'), 'r', encoding='utf-8') as f:
     for sentence_bpe, sentence in zip(f, _f):
         count += 1
         bpe =  sentence_bpe.strip().split()
@@ -42,7 +40,7 @@ with open(os.path.join(multi30k_dir, 'multi30k-'+src-tgt+'.bpe.en'), 'r', encodi
                         
             _list.append(dic)
 
-with open(os.path.join(now_path, 'data', src-tgt, 'origin2bpe.'+src-tgt+'.match'), 'w', encoding='utf-8') as f:
+with open(os.path.join(now_path, 'data', src_tgt, 'origin2bpe.'+src_tgt+'.match'), 'w', encoding='utf-8') as f:
     for i in _list:
         if isinstance(i, int):
            f.write(str(-1)+'\n')
