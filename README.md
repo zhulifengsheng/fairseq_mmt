@@ -20,6 +20,11 @@ Multi30k data from [here](https://github.com/multi30k/dataset) and [here](https:
 flickr30k entities data from [here](https://github.com/BryanPlummer/flickr30k_entities)  
 We get multi30k text data from [Revisit-MMT](https://github.com/LividWo/Revisit-MMT)
 ```bash
+cd fairseq_mmt
+git clone https://github.com/BryanPlummer/flickr30k_entities.git
+cd flickr30k_entities
+unzip annotations.zip
+
 # create a directory
 flickr30k
 ├─ flickr30k-images
@@ -52,6 +57,7 @@ pip3 install stanfordcorenlp
 wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
 unzip stanford-corenlp-latest.zip
 cd fairseq_mmt
+cat data/multi30k/train.en data/multi30k/valid.en data/multi30k/test.2016.en > train_val_test2016.en
 python3 record_masking_position.py 
 
 cd data/masking

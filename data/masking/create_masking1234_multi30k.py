@@ -2,6 +2,8 @@ import random
 import os
 import shutil
 
+src-tgt = 'en-de'
+
 data_path = os.path.abspath(os.path.join(os.getcwd(), "../.."))
 
 train_lines = 29000
