@@ -7,14 +7,14 @@ nlp = StanfordCoreNLP('../stanford-corenlp-4.3.2')#, lang='de')
 # init
 count = 0
 
-out = open('data/masking/multi30k.masking.en', 'w', encoding='utf-8')
-out_all_noun = open('data/masking/noun.en', 'w', encoding='utf-8')
-out_all_nouns = open('data/masking/nouns.en', 'w', encoding='utf-8')
+out = open('data/masking/data/multi30k.masking.en', 'w', encoding='utf-8')
+out_all_noun = open('data/masking/data/noun.en', 'w', encoding='utf-8')
+out_all_nouns = open('data/masking/data/nouns.en', 'w', encoding='utf-8')
 
-out_people = open('data/masking/multi30k.people.position', 'w', encoding='utf-8')
-out_color = open('data/masking/multi30k.color.position', 'w', encoding='utf-8')
-out_noun = open('data/masking/multi30k.noun.position', 'w', encoding='utf-8')
-out_nouns = open('data/masking/multi30k.nouns.position', 'w', encoding='utf-8')
+out_people = open('data/masking/data/multi30k.people.position', 'w', encoding='utf-8')
+out_color = open('data/masking/data/multi30k.color.position', 'w', encoding='utf-8')
+out_noun = open('data/masking/data/multi30k.noun.position', 'w', encoding='utf-8')
+out_nouns = open('data/masking/data/multi30k.nouns.position', 'w', encoding='utf-8')
 
 # multi30k.en consists of train+valid+test2016+test2017+testcoco
 path_multi30k='data/multi30k/multi30k.en'
@@ -139,10 +139,10 @@ if __name__ == '__main__':
     print(num_p, num_c, num_n, num_ns) 
 
     # create masking text
-    in_people = open('data/masking/multi30k.people.position', 'r', encoding='utf-8')
-    in_color = open('data/masking/multi30k.color.position', 'r', encoding='utf-8')
-    in_noun = open('data/masking/multi30k.noun.position', 'r', encoding='utf-8')
-    in_nouns = open('data/masking/multi30k.nouns.position', 'r', encoding='utf-8')
+    in_people = open('data/masking/data/multi30k.people.position', 'r', encoding='utf-8')
+    in_color = open('data/masking/data/multi30k.color.position', 'r', encoding='utf-8')
+    in_noun = open('data/masking/data/multi30k.noun.position', 'r', encoding='utf-8')
+    in_nouns = open('data/masking/data/multi30k.nouns.position', 'r', encoding='utf-8')
     _in = open(path_multi30k, 'r', encoding='utf-8')
 
     for p,c,n,ns,l in zip(in_people, in_color, in_noun, in_nouns, _in):
