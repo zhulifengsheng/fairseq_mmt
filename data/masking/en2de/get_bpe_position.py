@@ -104,12 +104,12 @@ if __name__ == '__main__':
         l = []  # list of masking origin text data's position
         for p, c, n, ns in zip(_pos_people, _pos_color, _pos_noun, _pos_nouns):
             where = []
-            if p[0] != '-1':
-                for i in p:
-                    where.append((i, 'p'))
-            if c[0] != '-1':
-                for i in c:
-                    where.append((i, 'c'))
+            #if p[0] != '-1':
+            #    for i in p:
+            #        where.append((i, 'p'))
+            #if c[0] != '-1':
+            #    for i in c:
+            #        where.append((i, 'c'))
             if n[0] != '-1':
                 for i in n:
                     where.append((i, 'n'))
