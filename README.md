@@ -64,7 +64,7 @@ sh train_mmt.sh
 sh translation_mmt.sh
 ```
 
-# masking data
+# create masking data
 ```bash
 pip3 install stanfordcorenlp 
 wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
@@ -73,10 +73,10 @@ cd fairseq_mmt
 python3 record_masking_position.py 
 
 cd data/masking
-cd en2de
+# create en-de masking data
 python3 match_origin2bpe_position.py
-python3 get_bpe_position.py         # create mask1-4 data
-python3 create_masking_multi30k.py  # create mask color&people data
+python3 create_maskding1234_multi30k.py         # create mask1-4 data
+python3 create_maskingcp_multi30k.py  # create mask color&people data
 
 sh preprocess_mmt.sh
 ```
