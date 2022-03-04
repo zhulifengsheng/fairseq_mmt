@@ -17,15 +17,15 @@ dic = {
     'ns': '[MASK_NS]',
 }
 
-pos_color = open('../multi30k.color.position', 'r', encoding='utf-8')
-pos_noun = open('../multi30k.noun.position', 'r', encoding='utf-8')
-pos_nouns = open('../multi30k.nouns.position', 'r', encoding='utf-8')
-pos_people = open('../multi30k.people.position', 'r', encoding='utf-8')
+pos_color = open('data/multi30k.color.position', 'r', encoding='utf-8')
+pos_noun = open('data/multi30k.noun.position', 'r', encoding='utf-8')
+pos_nouns = open('data/multi30k.nouns.position', 'r', encoding='utf-8')
+pos_people = open('data/multi30k.people.position', 'r', encoding='utf-8')
 
-#pos_bpe_color = open('multi30k.color.bpe.position', 'w', encoding='utf-8')
-#pos_bpe_noun = open('multi30k.noun.bpe.position', 'w', encoding='utf-8')
-#pos_bpe_nouns = open('multi30k.nouns.bpe.position', 'w', encoding='utf-8')
-#pos_bpe_people = open('multi30k.people.bpe.position', 'w', encoding='utf-8')
+pos_bpe_color = open('data/en2de/multi30k.color.bpe.position', 'w', encoding='utf-8')
+pos_bpe_noun = open('data/en2de/multi30k.noun.bpe.position', 'w', encoding='utf-8')
+pos_bpe_nouns = open('data/en2de/multi30k.nouns.bpe.position', 'w', encoding='utf-8')
+pos_bpe_people = open('data/en2de/multi30k.people.bpe.position', 'w', encoding='utf-8')
 
 def record_origin_pos(pos):
     l = []
@@ -51,7 +51,7 @@ def get_position(f, o, l):
 
 def get_matching():
     _l = [] # list of origin2bpe matching
-    with open('origin2bpe.en-de.match', 'r', encoding='utf-8') as f:
+    with open('data/en2de/origin2bpe.en-de.match', 'r', encoding='utf-8') as f:
         for sentence in f:
             dic = {}
             if sentence.strip() == '-1':
@@ -90,14 +90,14 @@ if __name__ == '__main__':
     pos_noun.close()
     pos_nouns.close()
 
-    #get_position(_pos_color, pos_bpe_color, list_matching)
-    #get_position(_pos_people, pos_bpe_people, list_matching)
-    #get_position(_pos_noun, pos_bpe_noun, list_matching)    
-    #get_position(_pos_nouns, pos_bpe_nouns, list_matching)
-    #pos_bpe_people.close()    
-    #pos_bpe_color.close()
-    #pos_bpe_noun.close()
-    #pos_bpe_nouns.close()
+    get_position(_pos_color, pos_bpe_color, list_matching)
+    get_position(_pos_people, pos_bpe_people, list_matching)
+    get_position(_pos_noun, pos_bpe_noun, list_matching)    
+    get_position(_pos_nouns, pos_bpe_nouns, list_matching)
+    pos_bpe_people.close()    
+    pos_bpe_color.close()
+    pos_bpe_noun.close()
+    pos_bpe_nouns.close()
 
     # masking 1-4
     for num in range(1, 5):
