@@ -56,7 +56,7 @@ if __name__ == '__main__':
         relaxed_sum = 0
         restrict_num = 0
         restrict_sum = 0
-
+        f1.seek(0)
         for l1, l2, l3 in zip(f1, restrirt_file, relax_file):
             src = l1.strip().split()
             restrict = l2.strip().split()
