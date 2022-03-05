@@ -2,7 +2,7 @@
 set -e
 
 # set device
-gpu=2
+gpu=7
 
 model_root_dir=checkpoints
 
