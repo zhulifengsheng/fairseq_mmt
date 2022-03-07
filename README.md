@@ -73,6 +73,7 @@ sh preprocess_mmt.sh
 ```bash
 # uncomment line416-418,474-475 in /fairseq/models/image_multimodal_transformer_SA.py
 # decode again, generate tensors to the checkpoint dir
+# prepare files needed in /visualization/visualization.py
 cd visualization
 python3 visualization.py
 ```

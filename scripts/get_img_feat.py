@@ -59,7 +59,7 @@ if __name__ == "__main__":
     save_dir = os.path.join('..', 'data', model_name)
     
     if not os.path.exists(save_dir):
-        os.mkdir(save_dir)
+        os.makedirs(save_dir)
     print('extracting ' + dataset + '\'s image feature from '+model_name) 
     model = timm.create_model(model_name, pretrained=True, num_classes=0).to('cuda:0') # if use cpu, uncomment '.to('cuda:0')'
     model.eval()
