@@ -2,6 +2,8 @@ import random
 import os
 import shutil
 
+random.seed(0)
+
 src_tgt = 'en-de'
 
 data_path = os.path.abspath(os.path.join(os.getcwd(), ".."))
@@ -44,8 +46,8 @@ def write_bpe_position(f, o, l):
                     y = l[num][i]
                     for j in y:
                         o.write(j+' ')
-                else:
-                    o.write(i+' ')
+                else:   # have masking token, but no @@
+                   o.write(i+' ')
         else:   # no masking token in this line
             o.write('-1')
         o.write('\n')
@@ -92,7 +94,7 @@ if __name__ == '__main__':
     pos_color.close()
     pos_people.close()
 
-    write_bpe_position(_pos_noun, pos_bpe_noun, list_matching)    
+    write_bpe_position(_pos_noun, pos_bpe_noun, list_matching) 
     write_bpe_position(_pos_nouns, pos_bpe_nouns, list_matching)
     write_bpe_position(_pos_color, pos_bpe_color, list_matching) 
     write_bpe_position(_pos_people, pos_bpe_people, list_matching) 
@@ -138,11 +140,10 @@ if __name__ == '__main__':
         tmp = []
         for line, position in zip(multi30k, new_l):
             lines = line.strip().split()
-            for i in position:
-                #print(i)
+            for i in position:  # i: ('1', 'n')
                 lines[int(i[0])] = dic[i[1]]
             
-            tmp.append(' '.join(lines)+'\n')
+            tmp.append(' '.join(lines)+'\n')    # a little [MASK_N] climbing into a wooden play@@ house .
             
         for idx, i in enumerate(tmp):
             if idx < train_lines:
@@ -203,13 +204,9 @@ if __name__ == '__main__':
 
         tmp = []
         for line, position in zip(multi30k, new_l):
-            x = position#.strip().split()
             lines = line.strip().split()
-            for i in x:
-                if i == '-1':
-                    break
-                else:
-                    lines[int(i[0])] = dic[mask_token]
+            for i in position:
+                lines[int(i[0])] = dic[mask_token]
             
             tmp.append(' '.join(lines)+'\n')
 

@@ -15,17 +15,17 @@ cd fairseq_mmt
 pip install --editable ./
 ```
 
-# multi30k data & flickr30k entities
+# Multi30k data & Flickr30k entities
 Multi30k data from [here](https://github.com/multi30k/dataset) and [here](https://www.statmt.org/wmt17/multimodal-task.html)  
 flickr30k entities data from [here](https://github.com/BryanPlummer/flickr30k_entities)  
-We get multi30k text data from [Revisit-MMT](https://github.com/LividWo/Revisit-MMT)
+Here, We get multi30k text data from [Revisit-MMT](https://github.com/LividWo/Revisit-MMT)
 ```bash
 cd fairseq_mmt
 git clone https://github.com/BryanPlummer/flickr30k_entities.git
 cd flickr30k_entities
 unzip annotations.zip
 
-# create a directory
+# download data and create a directory
 flickr30k
 ├─ flickr30k-images
 ├─ test2017-images
@@ -38,16 +38,77 @@ flickr30k
 └─ val.txt
 ```
 
-# Image feature
+# Extract image feature
 ```bash
 # please read scripts/README.md
-python3 scripts/get_img_feat.py --dataset train
+python3 scripts/get_img_feat.py --dataset train --model xxx --path xxx
 ```
+script parameters:
+- dataset choices=['train', 'val', 'test2016', 'test2017', 'testcoco']
+- model 'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
+- path '/path/to/your/flickr30k_dir'
 
 # Train and Test
 ```bash
-sh preprocess.sh
-sh train_mmt.sh
+src='en'
+tgt='de'
+mask=mask1  # mask1, mask2, mask3, maskc(color), maskp(character)
+TEXT=data/multi30k-en-$tgt.$mask
+
+fairseq-preprocess --source-lang $src --target-lang $tgt \
+  --trainpref $TEXT/train \
+  --validpref $TEXT/valid \
+  --testpref $TEXT/test.2016,$TEXT/test.2017,$TEXT/test.coco \
+  --destdir data-bin/multi30k.en-$tgt.$mask \
+  --workers 8 --joined-dictionary \
+  --srcdict data/dict.en2de_mask.txt
+```
+
+```bash
+mask_data=mask1
+data_dir=multi30k.en-de.mask1
+src_lang=en
+tgt_lang=de
+image_feat=vit_base_patch16_384
+tag=$image_feat/$image_feat-$mask_data
+save_dir=checkpoints/multi30k-en2de/$tag
+image_feat_path=data/$image_feat
+image_feat_dim=768
+
+criterion=label_smoothed_cross_entropy
+fp16=1
+lr=0.005
+warmup=2000
+max_tokens=4096
+update_freq=1
+keep_last_epochs=10
+patience=10
+max_update=8000
+dropout=0.3
+
+arch=image_multimodal_transformer_SA_top
+SA_attention_dropout=0.1
+SA_image_dropout=0.1
+
+CUDA_VISIBLE_DEVICES=0,1 fairseq-train data-bin/$data_dir
+  --save-dir $save_dir
+  --distributed-world-size 2 -s $src_lang -t $tgt_lang
+  --arch $arch
+  --dropout $dropout
+  --criterion $criterion --label-smoothing 0.1
+  --task image_mmt --image-feat-path $image_feat_path --image-feat-dim $image_feat_dim
+  --optimizer adam --adam-betas '(0.9, 0.98)'
+  --lr $lr --min-lr 1e-09 --lr-scheduler inverse_sqrt --warmup-init-lr 1e-07 --warmup-updates $warmup
+  --max-tokens $max_tokens --update-freq $update_freq --max-update $max_update
+  --find-unused-parameters
+  --share-all-embeddings
+  --patience $patience
+  --keep-last-epochs $keep_last_epochs
+  --SA-image-dropout $SA_image_dropout
+  --SA-attention-dropout $SA_attention_dropout
+```
+
+```bash
 sh translation_mmt.sh
 ```
 
@@ -67,8 +128,8 @@ python3 match_origin2bpe_position.py
 python3 create_masking_multi30k.py         # create mask1-4 & color & people data 
 
 sh preprocess_mmt.sh
-```
-
+```+-++
+``````
 # Visualization
 ```bash
 # uncomment line416-418,474-475 in /fairseq/models/image_multimodal_transformer_SA.py
@@ -77,3 +138,5 @@ sh preprocess_mmt.sh
 cd visualization
 python3 visualization.py
 ```
+
+[1] https://github.com/rwightman/pytorch-image-models/
