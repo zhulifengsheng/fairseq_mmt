@@ -1,6 +1,9 @@
 #!/usr/bin/bash
 set -e
 
+_mask=$1
+_image_feat=$2
+
 # set device
 gpu=7
 
@@ -8,8 +11,8 @@ model_root_dir=checkpoints
 
 # set task
 task=multi30k-en2de
-mask_data=mask4
-image_feat=vit_tiny_patch16_384
+mask_data=$_mask
+image_feat=$_image_feat
 
 who=test	#test1, test2
 random_image_translation=0 #1

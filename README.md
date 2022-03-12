@@ -49,6 +49,7 @@ script parameters:
 - ```path```:    '/path/to/your/flickr30k_dir'
 
 # Train and Test
+#### 1. Preprocess(mask1 as an example)
 ```bash
 src='en'
 tgt='de'
@@ -63,12 +64,12 @@ fairseq-preprocess --source-lang $src --target-lang $tgt \
   --workers 8 --joined-dictionary \
   --srcdict data/dict.en2de_$mask.txt
 ```
-
+#### 2. Train(mask1 as an example)
 ```bash
 mask_data=mask1
 data_dir=multi30k.en-de.mask1
-src_lang=en
-tgt_lang=de
+src_lang='en'
+tgt_lang='de'
 image_feat=vit_base_patch16_384
 tag=$image_feat/$image_feat-$mask_data
 save_dir=checkpoints/multi30k-en2de/$tag
@@ -89,6 +90,7 @@ dropout=0.3
 arch=image_multimodal_transformer_SA_top
 SA_attention_dropout=0.1
 SA_image_dropout=0.1
+SA_text_dropout=0
 
 CUDA_VISIBLE_DEVICES=0,1 fairseq-train data-bin/$data_dir
   --save-dir $save_dir
@@ -106,17 +108,24 @@ CUDA_VISIBLE_DEVICES=0,1 fairseq-train data-bin/$data_dir
   --keep-last-epochs $keep_last_epochs
   --SA-image-dropout $SA_image_dropout
   --SA-attention-dropout $SA_attention_dropout
+  --SA-text-dropout $SA_text_dropout
 ```
-
+*you can run train_mmt.sh instead of scripts above.*
+#### 3. Test(mask1 as an example)
 ```bash
-sh translation_mmt.sh
+#sh translation_mmt.sh $1 $2
+sh translation_mmt.sh mask1 vit_base_patch16_384
 ```
+script parameters:
+- ```$1```: choices=['mask1', 'mask2', 'mask3', 'mask4', 'maskc', 'maskp']
+- ```$2```:  'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
 
 # Create masking data
 ```bash
 pip3 install stanfordcorenlp 
 wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
 unzip stanford-corenlp-latest.zip
+
 cd fairseq_mmt
 cat data/multi30k/train.en data/multi30k/valid.en data/multi30k/test.2016.en > train_val_test2016.en
 python3 get_and_record_noun_from_f30k_entities.py 
@@ -128,8 +137,8 @@ python3 match_origin2bpe_position.py
 python3 create_masking_multi30k.py         # create mask1-4 & color & people data 
 
 sh preprocess_mmt.sh
-```+-++
-``````
+```
+
 # Visualization
 ```bash
 # uncomment line416-418,474-475 in /fairseq/models/image_multimodal_transformer_SA.py
@@ -138,5 +147,3 @@ sh preprocess_mmt.sh
 cd visualization
 python3 visualization.py
 ```
-
-[1] https://github.com/rwightman/pytorch-image-models/
