@@ -79,6 +79,10 @@ elif [ $image_feat == "vit_large_patch16_384" ]; then
 	image_feat_dim=1024
 fi
 
+# multi-feature
+#image_feat_path=data/vit_large_patch16_384 data/vit_tiny_patch16_384
+#image_feat_dim=1024 192
+
 cp ${BASH_SOURCE[0]} $save_dir/train.sh
 
 gpu_num=`echo "$device" | awk '{split($0,arr,",");print length(arr)}'`
