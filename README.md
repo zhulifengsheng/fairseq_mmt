@@ -25,7 +25,7 @@ git clone https://github.com/BryanPlummer/flickr30k_entities.git
 cd flickr30k_entities
 unzip annotations.zip
 
-# download data and create a directory
+# download data and create a directory anywhere
 flickr30k
 ├─ flickr30k-images
 ├─ test2017-images
@@ -40,13 +40,13 @@ flickr30k
 
 # Extract image feature
 ```bash
-# please read scripts/README.md
-python3 scripts/get_img_feat.py --dataset train --model xxx --path xxx
+# please read scripts/README.md firstly
+python3 scripts/get_img_feat.py --dataset train --model vit_base_patch16_384 --path ../flickr30k
 ```
 script parameters:
-- dataset choices=['train', 'val', 'test2016', 'test2017', 'testcoco']
-- model 'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
-- path '/path/to/your/flickr30k_dir'
+- ```dataset```: choices=['train', 'val', 'test2016', 'test2017', 'testcoco']
+- ```model```:  'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
+- ```path```:    '/path/to/your/flickr30k_dir'
 
 # Train and Test
 ```bash
@@ -61,7 +61,7 @@ fairseq-preprocess --source-lang $src --target-lang $tgt \
   --testpref $TEXT/test.2016,$TEXT/test.2017,$TEXT/test.coco \
   --destdir data-bin/multi30k.en-$tgt.$mask \
   --workers 8 --joined-dictionary \
-  --srcdict data/dict.en2de_mask.txt
+  --srcdict data/dict.en2de_$mask.txt
 ```
 
 ```bash

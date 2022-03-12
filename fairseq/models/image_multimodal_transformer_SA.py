@@ -177,8 +177,12 @@ class TransformerModel(FairseqEncoderDecoderModel):
         # args for image MMT
         parser.add_argument('--SA-image-dropout', type=float, default=0.1,
                             help='image feat dropout before SA')
+        parser.add_argument('--SA-text-dropout', type=float, default=0,
+                            help='text feat dropout before SA')
         parser.add_argument('--SA-attention-dropout', type=float, default=0.1,
                             help='selective attn\'s dropout')
+        parser.add_argument('--image-pre-norm', action='store_true', default=False,
+                            help='normlization on image feature before fusing') 
 
         parser.add_argument('--is-fusion-top', type=bool,
                             help='fuse img feat after text encoding')
@@ -387,7 +391,14 @@ class TransformerEncoder(FairseqEncoder):
         self.image_dropout_module = FairseqDropout(
             args.SA_image_dropout, module_name=self.__class__.__name__
         )
-        
+        self.text_dropout_module = FairseqDropout(
+            args.SA_text_dropout, module_name=self.__class__.__name__
+        )
+
+        self.image_pre_norm_module = nn.Identity()
+        if args.image_pre_norm:
+            self.image_pre_norm_module = nn.LayerNorm(args.image_feat_dim, 1e-5, True)
+
         self.is_fusion_top = args.is_fusion_top
 
         self.recoder = utils.Recorder(args)
@@ -407,7 +418,9 @@ class TransformerEncoder(FairseqEncoder):
             return res
 
     def fuse_img_feat(self, text, idx, image, image_mask, text_mask):
+        image = self.image_pre_norm_module(image)
         image = self.image_dropout_module(image)
+        text = self.text_dropout_module(text)
         output, _map = self.selective_attns[idx](query=text, key=image, value=image, key_padding_mask=image_mask)   # t, b, c
         
         merge = torch.cat([output, text], dim=-1)

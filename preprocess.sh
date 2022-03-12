@@ -1,5 +1,5 @@
 src='en'
-tgt='de'
+tgt='fr'
 
 TEXT=data/multi30k-en-$tgt
 

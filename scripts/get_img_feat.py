@@ -58,7 +58,7 @@ if __name__ == "__main__":
     flickr30k_path = args.path
     dataset = args.dataset
     model_name = args.model
-    save_dir = os.path.join('..', 'data', model_name)
+    save_dir = os.path.join('data', model_name)
     
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
