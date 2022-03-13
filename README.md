@@ -46,7 +46,26 @@ python3 scripts/get_img_feat.py --dataset train --model vit_base_patch16_384 --p
 script parameters:
 - ```dataset```: choices=['train', 'val', 'test2016', 'test2017', 'testcoco']
 - ```model```:  'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
-- ```path```:    '/path/to/your/flickr30k_dir'
+- ```path```:    '/path/to/your/flickr30k'
+
+# Create masking data
+```bash
+pip3 install stanfordcorenlp 
+wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
+unzip stanford-corenlp-latest.zip
+
+cd fairseq_mmt
+cat data/multi30k/train.en data/multi30k/valid.en data/multi30k/test.2016.en > train_val_test2016.en
+python3 get_and_record_noun_from_f30k_entities.py # recording noun and nouns position in each sentence by flickr30k_entities
+python3 record_color_people_position.py
+
+# create en-de masking data
+cd data/masking
+python3 match_origin2bpe_position.py
+python3 create_masking_multi30k.py         # create mask1-4 & color & people data 
+
+sh preprocess_mmt.sh
+```
 
 # Train and Test
 #### 1. Preprocess(mask1 as an example)
@@ -64,6 +83,7 @@ fairseq-preprocess --source-lang $src --target-lang $tgt \
   --workers 8 --joined-dictionary \
   --srcdict data/dict.en2de_$mask.txt
 ```
+*sh preprocess.sh to generate no masking data*
 #### 2. Train(mask1 as an example)
 ```bash
 mask_data=mask1
@@ -114,34 +134,15 @@ CUDA_VISIBLE_DEVICES=0,1 fairseq-train data-bin/$data_dir
 #### 3. Test(mask1 as an example)
 ```bash
 #sh translation_mmt.sh $1 $2
-sh translation_mmt.sh mask1 vit_base_patch16_384
+sh translation_mmt.sh mask1 vit_base_patch16_384  # origin text is mask0
 ```
 script parameters:
-- ```$1```: choices=['mask1', 'mask2', 'mask3', 'mask4', 'maskc', 'maskp']
+- ```$1```: choices=['mask1', 'mask2', 'mask3', 'mask4', 'maskc', 'maskp', 'mask0']
 - ```$2```:  'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
-
-# Create masking data
-```bash
-pip3 install stanfordcorenlp 
-wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip
-unzip stanford-corenlp-latest.zip
-
-cd fairseq_mmt
-cat data/multi30k/train.en data/multi30k/valid.en data/multi30k/test.2016.en > train_val_test2016.en
-python3 get_and_record_noun_from_f30k_entities.py 
-python3 record_color_people_position.py
-
-# create en-de masking data
-cd data/masking
-python3 match_origin2bpe_position.py
-python3 create_masking_multi30k.py         # create mask1-4 & color & people data 
-
-sh preprocess_mmt.sh
-```
 
 # Visualization
 ```bash
-# uncomment line416-418,474-475 in /fairseq/models/image_multimodal_transformer_SA.py
+# uncomment line429-431,487-488 in /fairseq/models/image_multimodal_transformer_SA.py
 # decode again, generate tensors to the checkpoint dir
 # prepare files needed in /visualization/visualization.py
 cd visualization

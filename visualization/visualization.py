@@ -54,8 +54,8 @@ def selective_attention_visualization(model_path):
         for sent_num in range(attn_map.shape[0]):
             filename = test_images_filename_list[translation_order_list[batch * 128 + sent_num]]
             # Images for test
-            # if filename != '2321764238.jpg':
-            #     continue
+            if filename != '2321764238.jpg':
+                continue
             # if filename != '327955368.jpg':
             #     continue
             print(filename)
@@ -94,9 +94,8 @@ def selective_attention_visualization(model_path):
 
 
 if __name__ == "__main__":
-    model_path = 'multi30k-en2de/vit_tiny_patch16_384/vit_tiny_patch16_384-mask4'
-    mask_path  = '../checkpoints/' + model_path
-    selective_attention_visualization(mask_path)
+    model_path  = '../checkpoints/multi30k-en2de/vit_base_patch16_384/vit_base_patch16_384-mask4'
+    selective_attention_visualization(model_path)
 
 
 

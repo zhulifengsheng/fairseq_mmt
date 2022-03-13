@@ -9707,6 +9707,5 @@ zäunten 1
 üb@@ 1
 überda@@ 1
 [MASK_C] 0
-[MASK_P] 0
 [MASK_N] 0
 [MASK_NS] 0
