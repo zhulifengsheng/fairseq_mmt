@@ -1,10 +1,11 @@
 import random
 import os
 import shutil
+import sys
 
 random.seed(0)
 
-src_tgt = 'en-de'
+src_tgt = sys.argv[-1] #'en-de'
 
 data_path = os.path.abspath(os.path.join(os.getcwd(), ".."))
 
