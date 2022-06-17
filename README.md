@@ -61,10 +61,13 @@ cat data/multi30k/train.en data/multi30k/valid.en data/multi30k/test.2016.en > t
 python3 get_and_record_noun_from_f30k_entities.py # recording noun and nouns position in each sentence by flickr30k_entities
 python3 record_color_people_position.py
 
-# create en-de masking data
 cd data/masking
-python3 match_origin2bpe_position.py
-python3 create_masking_multi30k.py         # create mask1-4 & color & people data 
+# create en-de masking data
+python3 match_origin2bpe_position.py en-de
+python3 create_masking_multi30k.py en-de         # create mask1-4 & color & people data 
+# create en-fr masking data
+python3 match_origin2bpe_position.py en-fr
+python3 create_masking_multi30k.py en-fr         # create mask1-4 & color & people data 
 
 sh preprocess_mmt.sh
 ```
