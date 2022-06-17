@@ -1,6 +1,7 @@
 import os
+import sys
 
-src_tgt = 'en-de'
+src_tgt = sys.argv[-1] #'en-de'
 
 now_path = os.getcwd()
 if not os.path.exists(os.path.join(now_path, 'data', src_tgt)):
