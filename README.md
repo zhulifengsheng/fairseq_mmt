@@ -39,7 +39,7 @@ flickr30k
 ```
 
 # Extract image feature
-![](./image_feature_shape.png)
+![](image_feat_shape.png)
 ```bash
 # please read scripts/README.md firstly
 python3 scripts/get_img_feat.py --dataset train --model vit_base_patch16_384 --path ../flickr30k
