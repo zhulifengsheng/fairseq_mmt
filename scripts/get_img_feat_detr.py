@@ -60,6 +60,7 @@ if __name__ == "__main__":
     
     count = 1
     filenames = get_filenames(os.path.join(flickr30k_path, dic1[dataset]))
+    tmp = []
 
     # propagate through the model
     with torch.no_grad():
