@@ -54,7 +54,7 @@ flickr30k
 #### 2. DETR 
   ![detr](detr.png)
   ```bash
-  # please run detr.py to download DETR offical code and model, then modify detr offical code to extract image feature!
+  # please run detr.py to download DETR offical code and model, then modify detr.py (in detr offical code) to extract image feature!
   # ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
   python3 detr.py
   ```
