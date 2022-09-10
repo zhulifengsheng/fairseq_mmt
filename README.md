@@ -55,10 +55,13 @@ flickr30k
   ![detr](detr.png)
   ```bash
   # please run scripts/get_img_feat_detr.py to download DETR offical code and model firstly
-  # then modify detr.py (in DETR offical code) to extract image feature
+  # then modify detr.py (in DETR offical code) to extract image feature according to the above image
   # ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
-  python3 scripts/get_img_feat_detr.py
+  python3 scripts/get_img_feat_detr.py --dataset train --path ../flickr30k
   ```
+  script parameters:
+  - ```dataset```: choices=['train', 'val', 'test2016', 'test2017', 'testcoco']
+  - ```path```:    '/path/to/your/flickr30k'
 
 # Create masking data
 ```bash
