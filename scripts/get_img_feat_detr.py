@@ -8,7 +8,7 @@ import argparse
 
 # running following code, to download DETR offical code and model
 # see https://github.com/facebookresearch/detr
-model = torch.hub.load('facebookresearch/detr', 'detr_resnet101_dc5', pretrained=True)
+model = torch.hub.load('facebookresearch/detr', 'detr_resnet101_dc5', pretrained=True).to('cuda:0')
 model.eval()
 
 def get_filenames(path):
