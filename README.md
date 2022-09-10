@@ -54,9 +54,10 @@ flickr30k
 #### 2. DETR 
   ![detr](detr.png)
   ```bash
-  # please run detr.py to download DETR offical code and model, then modify detr.py (in detr offical code) to extract image feature!
+  # please run scripts/get_img_feat_detr.py to download DETR offical code and model firstly
+  # then modify detr.py (in detr offical code) to extract image feature
   # ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
-  python3 detr.py
+  python3 scripts/get_img_feat_detr.py
   ```
 
 # Create masking data
