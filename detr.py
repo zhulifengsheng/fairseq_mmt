@@ -9,7 +9,7 @@ model = torch.hub.load('facebookresearch/detr', 'detr_resnet101', pretrained=Tru
 model.eval()
 
 # load an image
-im = Image.open('/home/huangcanan/lch/flickr30k/flickr30k-images/36979.jpg')
+im = Image.open('flickr30k/flickr30k-images/36979.jpg')
 
 transform = T.Compose([
     T.Resize(800),
