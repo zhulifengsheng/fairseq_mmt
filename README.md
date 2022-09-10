@@ -55,7 +55,7 @@ flickr30k
   ![detr](detr.png)
   ```bash
   # please run scripts/get_img_feat_detr.py to download DETR offical code and model firstly
-  # then modify detr.py (in DETR offical code) to extract image feature according to the above image
+  # then modify detr.py (in DETR offical code) to return image feature according to the above image
   # ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
   python3 scripts/get_img_feat_detr.py --dataset train --path ../flickr30k
   ```
