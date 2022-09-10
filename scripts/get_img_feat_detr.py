@@ -57,6 +57,9 @@ if __name__ == "__main__":
     flickr30k_path = args.path
     dataset = args.dataset
     save_dir = os.path.join('data', 'DETR-DC5-R101')
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    print('extracting ' + dataset + '\'s image feature from DETR-DC5-R101') 
     
     count = 1
     filenames = get_filenames(os.path.join(flickr30k_path, dic1[dataset]))
