@@ -39,7 +39,7 @@ flickr30k
 ```
 
 # Extract image feature
-1. Vision Transformer
+#### 1. Vision Transformer 
   ![image_feat_shape](image_feat_shape.png)
   ```bash
   # please read scripts/README.md to modify the code of timm firstly!
@@ -51,10 +51,10 @@ flickr30k
   - ```model```:  'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
   - ```path```:    '/path/to/your/flickr30k'
   
-2. DETR
+#### 2. DETR 
   ![detr](detr.png)
   ```bash
-  # run detr.py to download DETR offical code and model, then modify the code of detr after downloading detr offical code!
+  # please run detr.py to download DETR offical code and model, then modify detr offical code to extract image feature!
   # ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
   python3 detr.py
   ```
