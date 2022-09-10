@@ -39,16 +39,25 @@ flickr30k
 ```
 
 # Extract image feature
-![image_feat_shape](image_feat_shape.png)
-```bash
-# please read scripts/README.md to modify the code of timm firstly!
-# ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
-python3 scripts/get_img_feat.py --dataset train --model vit_base_patch16_384 --path ../flickr30k
-```
-script parameters:
-- ```dataset```: choices=['train', 'val', 'test2016', 'test2017', 'testcoco']
-- ```model```:  'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
-- ```path```:    '/path/to/your/flickr30k'
+1. Vision Transformer
+  ![image_feat_shape](image_feat_shape.png)
+  ```bash
+  # please read scripts/README.md to modify the code of timm firstly!
+  # ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
+  python3 scripts/get_img_feat.py --dataset train --model vit_base_patch16_384 --path ../flickr30k
+  ```
+  script parameters:
+  - ```dataset```: choices=['train', 'val', 'test2016', 'test2017', 'testcoco']
+  - ```model```:  'vit_base_patch16_384', that you can find in [timm.list_models()](https://github.com/rwightman/pytorch-image-models/)
+  - ```path```:    '/path/to/your/flickr30k'
+  
+2. DETR
+  ![detr](detr.png)
+  ```bash
+  # run detr.py to download DETR offical code and model, then modify the code of detr after downloading detr offical code!
+  # ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆ ⬆
+  python3 detr.py
+  ```
 
 # Create masking data
 ```bash
